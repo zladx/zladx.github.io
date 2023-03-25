@@ -1,7 +1,7 @@
 # Site settings
 name: ZLADX
 url: https://zladx.github.io/blog
-description:
+description: "Articles on Zelda: Link's Awakening DX disassembly"
 logo: /images/avatar.png
 lang: fr-FR
 github_url: https://github.com/zladx/LADX-Disassembly
