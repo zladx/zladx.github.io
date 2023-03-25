@@ -1,0 +1,9 @@
+---
+permalink: .htaccess
+---
+
+# Redirections
+
+## RSS Feed
+
+Redirect 301 /rss.php /atom.xml

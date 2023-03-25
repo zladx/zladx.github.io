@@ -1,0 +1,24 @@
+image: ruby:3.0
+
+# Cache dependencies between builds
+cache:
+  paths:
+    - vendor/
+
+# Install dependencies
+before_script:
+  - bundle install -j $(nproc) --path vendor
+
+# Build and publish the static files
+pages:
+  stage: deploy
+  variables:
+    JEKYLL_ENV: production
+    LC_ALL: C.UTF-8
+  script:
+  - bundle exec rake build
+  artifacts:
+    paths:
+    - public
+  only:
+    - main

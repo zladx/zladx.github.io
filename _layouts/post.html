@@ -1,0 +1,33 @@
+---
+layout: layout
+---
+
+<section class="content {{ page.class }}">
+  <h1>
+    <a href="{{ page.url }}">{{ page.title }}</a>
+  </h1>
+
+  <section class="byline">
+    {{ page.date | date: "%e %B %Y" }}
+  </section>
+
+  {{ content }}
+
+  <section class="meta">
+    <div class="applause__container">
+      <span class="applause__button">
+        <script src="/javascript/applause-button.js"></script>
+        <applause-button style="width: 48px; height: 48px;" url={{ page.url | absolute_url }}/>
+      </span>
+      <p class="applause__label">Kudos</p>
+    </div>
+
+    <section class="copy">
+      <h3>Want to read more?</h3>
+      <p>
+        Read the <a href="/archives">other articles</a> of this series,
+discover <a href="https://github.com/zladx/LADX-Disassembly">more of Link's Awakening code</a>, or <a href="https://discord.gg/sSHrwdB">join the discussion on Discord</a>.
+      </p>
+    </section>
+  </section>
+</section>

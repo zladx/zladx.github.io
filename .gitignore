@@ -1,4 +1,9 @@
-_site/
-.sass-cache/
-.jekyll-cache/
+.DS_Store
 .jekyll-metadata
+.jekyll-cache
+_drafts
+_site
+public
+TODO
+
+images/zelda-links-awakening-overworld-map/overworld-tilesets-with-paths.pxm

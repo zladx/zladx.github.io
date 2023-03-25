@@ -1,0 +1,34 @@
+# Site settings
+name: ZLADX
+url: https://zladx.github.io/blog
+description:
+logo: /images/avatar.png
+lang: fr-FR
+github_url: https://github.com/zladx/LADX-Disassembly
+wiki_url: https://github.com/zladx/LADX-Disassembly/wiki
+discord_url: https://discord.com/invite/sSHrwdB
+paginate: 3
+excerpt_separator: <!--more-->
+future: true
+
+# Build settings
+markdown: kramdown
+permalink: /posts/:title
+
+# Livereload settings
+# (requires jekyll-livereload)
+livereload: true
+reload_port: 5678
+
+# Plugins
+plugins:
+  - jekyll-paginate
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+exclude:
+  - Rakefile
+  - Gemfile
+  - Gemfile.lock
+  - Left-theme-licence.txt
+  - vendor

@@ -1,0 +1,16 @@
+---
+layout: layout
+title: "Archives"
+---
+
+<section class="content">
+  <ul class="listing">
+    {% for post in site.posts %}
+      {% unless post.draft %}
+	    <li>
+	      <span>{{ post.date | date: "%e %B %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
+	    </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</section>
