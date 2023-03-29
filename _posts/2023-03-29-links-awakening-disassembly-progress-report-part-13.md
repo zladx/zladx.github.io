@@ -12,6 +12,9 @@ cover the changes that happened in the past two years.
 
 https://github.com/zladx/LADX-Disassembly/pull/465
 
+<img alt="A screenshot of the source code opened in a text editor, with the rgb colors being appropriately colored" width="320" src="/images/zelda-links-awakening-progress-report-13/rgb-palettes.png"/><br>
+_Visual representation of the game palettes in VS Code._
+
 ## BG encoder fixes
 
 https://github.com/zladx/LADX-Disassembly/pull/398, https://github.com/zladx/LADX-Disassembly/pull/456
