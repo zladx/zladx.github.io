@@ -8,6 +8,17 @@ lang: en
 After a solid two-years hiatus, here's a new progress report for the Zelda: Link’s Awakening disassembly! Here we’ll
 cover the changes that happened in the past two years.
 
+## New contributors
+
+First let's congratulate the following new contributors, who made their first commit to the project during the past two years:
+
+- [@samuel-flynn](https://github.com/samuel-flynn) labeled a [couple of global variables](https://github.com/zladx/LADX-Disassembly/pull/182) related to the rupees buffer.
+- [@Nog-Frog](https://github.com/Nog-Frog) noticed that a graphics file included both credits graphics and the photographer sprites, and [split it in two](https://github.com/zladx/LADX-Disassembly/pull/353).
+- [@squircledev](https://github.com/squircledev) fixed a gallicism by [renaming "Cyclop key" to "Slime key"](https://github.com/zladx/LADX-Disassembly/pull/402).
+- [@tobiasvl](https://github.com/tobiasvl) added support for [compiling the project using RGBDS 0.6](https://github.com/zladx/LADX-Disassembly/pull/451) – and then opened 33 others PR to fix comments, document physics, bosses, and much more.
+- [@ISSOtm](https://github.com/ISSOtm) [fixed an non-indexed image](https://github.com/zladx/LADX-Disassembly/pull/454), which was breaking compatibility with RGBDS 0.6.
+- [@KelseyHigham](https://github.com/KelseyHigham) decoded all color palettes data to readable RGB values, and added speaker labels to dialogs.
+
 ## Palettes documentation (RGB macros and all)
 
 https://github.com/zladx/LADX-Disassembly/pull/465
@@ -35,6 +46,10 @@ https://github.com/zladx/LADX-Disassembly/pull/431 and more
 
 https://github.com/zladx/LADX-Disassembly/pull/347
 
+## Dialog lines
+
+https://github.com/zladx/LADX-Disassembly/pull/509
+
 ## rgbds 0.6
 
 https://github.com/zladx/LADX-Disassembly/pull/451
@@ -48,4 +63,5 @@ https://github.com/jverkoey/windfish/
 - Translations
 - Randomizer (+ monthly hacks)
 - Turbo Français
-- Others
+- tobiasvl redux?
+
