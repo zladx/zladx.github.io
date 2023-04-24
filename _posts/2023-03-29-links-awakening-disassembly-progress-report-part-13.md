@@ -222,7 +222,7 @@ To summarize the key points of the sprites resource management:
 
 - At any point in the main gameplay, there are 4 slots available in VRAM, corresponding to 4 entity spritesheets.
 - Each room defines four associated spritesheet-ids. When transitioning from one room to another, the game engine compares the spritesheets currently loaded in VRAM with the spritesheets requested by the new room, and marks the non-loaded-yet ones as needing to be copied.
-- Rooms can only load **two new spritesheets**. This ensures that during room transitions both the two previous shritesheets _and_ the two new ones will be available.
+- Rooms can only load **two new spritesheets**. This ensures that during room transitions both the two previous shrite-sheets _and_ the two new ones will be available.
 - However, when warping directly to a new room, **all four spritesheets** are loaded at once. This allows to load larger NPCs or enemies, by putting them behind a warp (like a staircase).
 - The position of each spritesheet is hardcoded: entities expect their sprites to be always loaded at the same location (excepting special cases). Which means entities can conflit which each other: for instance, Octorocks and Moblins can never be displayed in the same room, as they both expect their spritesheet to be loaded at the same location.
 
@@ -230,9 +230,70 @@ That's the gist of it – but of course there's more.
 
 For a more detailed read on this topic, and details about how the following NPCs interact with this system, head to the [sprite-sheets article on the wiki](https://github.com/zladx/LADX-Disassembly/wiki/Game-engine-documentation#4-entities)!
 
-## Peeophole replacement
+## Peephole replacement
 
-https://github.com/zladx/LADX-Disassembly/pull/347
+Often, in the code, we need to turn a numerical value into a constant. 
+
+For instance, there may be a lot of patterns like this:
+
+```asm
+ld   a, $08               ; load the constant "08" into register a
+ldh  [hMusicTrack], a    ; write the content of a to the variable hMusicTrack
+```
+
+There may be dozens of similar uses of `hMusicTrack` in the code.
+
+At some point, someones may identify the meaning of all these numerical values:
+
+```asm
+MUSIC_NONE                              equ $00 
+MUSIC_TITLE_SCREEN                      equ $01 
+MUSIC_MINIGAME                          equ $02 
+MUSIC_GAME_OVER                         equ $03
+MUSIC_MABE_VILLAGE                      equ $04
+MUSIC_OVERWORLD                         equ $05
+MUSIC_TAL_TAL_RANGE                     equ $06
+MUSIC_SHOP                              equ $07
+MUSIC_RAFT_RIDE_RAPIDS                  equ $08
+MUSIC_MYSTERIOUS_FOREST                 equ $09
+…
+```
+
+Good! But it now means that we need to look up all usages of hMusicTrack, and manually replace the numerical value by the proper constant. Tedious.
+
+Luckily, `@daid` [wrote a generic tool](https://github.com/zladx/LADX-Disassembly/pull/347) to make this task easier: the _peephole replacer_.
+
+This tool can read a list of constants, a code pattern to look for — and then scan the whole code for this specific pattern.
+
+In our case, we can use the peephole replacer with the following declaration:
+
+```python
+PeepholeRule("""
+    ld   a, $@@
+    ldh  [hMusicTrack], a
+""", read_enum("constants/sfx.asm", "MUSIC_"))
+```
+
+Now invoking `./tools/peephole-replace.py` will detect all uses of `hMusicTrack` in the code, and automatically replace the numerical value with the proper constant.
+
+```asm
+ld   a, MUSIC_RAFT_RIDE_RAPIDS              
+ldh  [hMusicTrack], a    
+```
+
+Of course this has been used with many other constants as well (sound effects, entity flag, etc.). The peephole replacer can even perform more complex operations, like expanding the values of bitflags:
+
+```asm
+; Before
+ld   hl, wEntitiesOptions1Table               
+add  hl, bc                                  
+ld   [hl], $D0
+
+; After
+ld   hl, wEntitiesOptions1Table               
+add  hl, bc                                  
+ld   [hl], ENTITY_OPT1_IS_BOSS|ENTITY_OPT1_SWORD_CLINK_OFF|ENTITY_OPT1_IMMUNE_WATER_PIT
+```
 
 ## Dialog lines
 
