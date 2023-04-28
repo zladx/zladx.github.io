@@ -36,7 +36,7 @@ _Example of the color palette used for green objects, and for Link's sprite._
 
 But this wasn't reflected in the disassembly until now. Color palettes were represented in a binary format, matching the underlying hardware, but difficult to read and edit by humans.
 
-```asm
+```m68k
 ObjectPalettes::
     ds  $FF, $47, $00, $00, $A2, $22, $FF, $46
 ```
@@ -44,7 +44,7 @@ _The same palette, as it was appearing in the source code._
 
 Kelsey Higham wanted colors that were easier to read. After a bit of collective macro writing on the Discord server, the final format ends up like this:
 
-```asm
+```m68k
 ObjectPalettes::
     rgb   #F8F888, #000000, #10A840, #F8B888
 ```
@@ -171,7 +171,7 @@ Entities are the various NPCs, enemies, and actors that form the dynamic element
 
 In the original source code, we have good reasons to believe that the entities code was grouped in a handful of source files.
 
-<pre>
+```
 ./entities
 ├── entities3.asm
 ├── entities4.asm
@@ -182,12 +182,12 @@ In the original source code, we have good reasons to believe that the entities c
 └── entities18.asm
 └── entities19.asm
 └── entities36.asm
-</pre>
+```
 _How the original code was probably structured._
 
 But to make the code easier to browse and to understand, the disassembly attempts to split the code of each entity into its own source file.
 
-<pre>
+```
 ./entities
 ├── 03__helpers.asm
 ├── 03_arrow.asm
@@ -198,7 +198,7 @@ But to make the code easier to browse and to understand, the disassembly attempt
 ├── 03_moblin.asm
 ├── 03_octorok.asm
 └── …
-</pre>
+```
 _How the disassembly attempts to split the entities each into their own file._
 
 These split are not straightforward: the entities code are not cleanly isolated, but instead reference a kind-of-standard set of helper functions, duplicated into each original file. Sometime an entity will even use some code from another entity in the same file!
@@ -236,8 +236,8 @@ Often, in the code, we need to turn a numerical value into a constant.
 
 For instance, there may be a lot of patterns like this:
 
-```asm
-ld   a, $08               ; load the constant "08" into register a
+```m68k
+ld   a, $08              ; load the constant "08" into register a
 ldh  [hMusicTrack], a    ; write the content of a to the variable hMusicTrack
 ```
 
@@ -245,7 +245,7 @@ There may be dozens of similar uses of `hMusicTrack` in the code.
 
 At some point, someones may identify the meaning of all these numerical values:
 
-```asm
+```m68k
 MUSIC_NONE                              equ $00 
 MUSIC_TITLE_SCREEN                      equ $01 
 MUSIC_MINIGAME                          equ $02 
@@ -256,7 +256,7 @@ MUSIC_TAL_TAL_RANGE                     equ $06
 MUSIC_SHOP                              equ $07
 MUSIC_RAFT_RIDE_RAPIDS                  equ $08
 MUSIC_MYSTERIOUS_FOREST                 equ $09
-…
+; …
 ```
 
 Good! But it now means that we need to look up all usages of hMusicTrack, and manually replace the numerical value by the proper constant. Tedious.
@@ -276,20 +276,20 @@ PeepholeRule("""
 
 Now invoking `./tools/peephole-replace.py` will detect all uses of `hMusicTrack` in the code, and automatically replace the numerical value with the proper constant.
 
-```asm
+```m68k
 ld   a, MUSIC_RAFT_RIDE_RAPIDS              
 ldh  [hMusicTrack], a    
 ```
 
 Of course this has been used with many other constants as well (sound effects, entity flag, etc.). The peephole replacer can even perform more complex operations, like expanding the values of bitflags:
 
-```asm
-; Before
+```m68k
+; Before running the peephole replacer, with a raw numerical constant
 ld   hl, wEntitiesOptions1Table               
 add  hl, bc                                  
 ld   [hl], $D0
 
-; After
+; After, the bitflag is properly decoded
 ld   hl, wEntitiesOptions1Table               
 add  hl, bc                                  
 ld   [hl], ENTITY_OPT1_IS_BOSS|ENTITY_OPT1_SWORD_CLINK_OFF|ENTITY_OPT1_IMMUNE_WATER_PIT
@@ -297,7 +297,29 @@ ld   [hl], ENTITY_OPT1_IS_BOSS|ENTITY_OPT1_SWORD_CLINK_OFF|ENTITY_OPT1_IMMUNE_WA
 
 ## Dialog lines
 
-https://github.com/zladx/LADX-Disassembly/pull/509
+A disassembled game is a great tool for fan-translations. Compared to ROM hacking, the script is easier to edit, and doesn't require to relocate text pointers manually. Plus any language-specific features can be hacked in relatively easily.
+
+So it's no surprise that a handful of fan-translations started popping up (there are working progress in spanish, norwegian and toki-pona). 
+
+Each translation has to go through the whole dialog files. However, in these files, the dialogs are unordered, and out of context: there are no indication about where a specific dialog line or text is used. And looking up the dialog reference in the code doesn't always work (because of dialog identifiers generated dynamically).
+
+Fortunately, Kelsey Higham decided to [improve this situation](https://github.com/zladx/LADX-Disassembly/pull/509). – starting with the speakers names. Now, beside almost every dialog line, a comment indicates which character or entity uses the line in the game.
+
+```m68k
+Dialog19B:: ; Schule Donavitch
+    db "Ya, I am Schule "
+    db "Donavitch!      "
+```
+_Some lines are easy to attribute to a specific character._
+
+Now even the most obscure lines can be traced back. And i```m68kt greatly which helps to imagine the line in context, and translate it properly.
+
+```m68k
+Dialog27A:: ; Marin
+    db "Whew!  What a   "
+    db "surprise!@"
+```
+_Without context, that one would be less clear._
 
 ## rgbds 0.6
 
