@@ -323,7 +323,17 @@ _Without context, that one would be less clear._
 
 ## rgbds 0.6
 
-https://github.com/zladx/LADX-Disassembly/pull/451
+The toolchain used to compile the Game Boy code, [rgbds](https://rgbds.gbdev.io/), is surprisingly active. Every year or so, its assembler, linker and tools get new features–and sometime new deprecations. [rgbds 0.6](https://github.com/gbdev/rgbds/releases/tag/v0.6.0), released in October 2022, introduced a handful of breaking changes.
+
+Modders are usually keen to work with the latest version of the toolchain. So [tobiasvl](https://github.com/tobiasvl) took on the task to fix the code for the latest assembler version.
+
+But before that, a handful of issues needed to be resolved:
+
+- kemenaran fixed the [syntax for declaring macros](https://github.com/zladx/LADX-Disassembly/pull/447);
+- `rgbgfx`, the tool used to convert PNG files to the binary Game Boy image format, got an upgrade – but it broke the auto-detection of some color palettes. [ISSOtm](https://github.com/ISSOtm), the maintainer of rgbds, ensured that all PNG files in the source code have their grayscale palette [properly detected](https://github.com/zladx/LADX-Disassembly/pull/454/files).
+- Did you know that the game uses several different text-to-integer mappings (also known as charmaps)? The characters for the player name are encoded differently than the one for dialogs; plus of course each localized version has its own idiosyncrasies… [ShadowOne333](https://github.com/ShadowOne333) and kemenaran [refactored the various charmaps](https://github.com/zladx/LADX-Disassembly/pull/449) used by different portions of the game, to fix warnings on newer rgbds versions.
+
+And finally, tobiasvl messed with the Makefile, which can now [pass the correct compilation flags](https://github.com/zladx/LADX-Disassembly/pull/451) to both older and newer versions of rgbds.
 
 ## Windfish interactive disassembler
 
@@ -332,6 +342,8 @@ https://github.com/jverkoey/windfish/
 ## Rom hacks
 
 - Translations
+  - spanish : https://www.romhacking.net/translations/6376/ 
+  - toki pona : https://youtu.be/xi8gUvqyMm4)
 - Randomizer (+ monthly hacks)
 - Turbo Français
 - tobiasvl redux?
