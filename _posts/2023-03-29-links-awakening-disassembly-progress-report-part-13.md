@@ -337,13 +337,47 @@ And finally, tobiasvl messed with the Makefile, which can now [pass the correct 
 
 ## Windfish interactive disassembler
 
-https://github.com/jverkoey/windfish/
+Most disassembly projects are presented as a bunch of text files, with barely any of the interactive tooling . A bare-bone syntax highlighting when lucky — but no navigation, code structure or type inference one can expect when working on modern languages.
 
-## Rom hacks
+This is where disassembly IDEs fill a gap. Instead of text files, they present an interactive and navigable view of the code. They also usually feature an integrated disassembler, pictures rendering, ties with an emulator for live code inspection, and so on. A notable example is [DiztinGUIsh](https://github.com/IsoFrieze/DiztinGUIsh), a disassembler for Super NES games.
 
-- Translations
-  - spanish : https://www.romhacking.net/translations/6376/ 
-  - toki pona : https://youtu.be/xi8gUvqyMm4)
-- Randomizer (+ monthly hacks)
-- Turbo Français
-- tobiasvl redux?
+Until recently, no such IDE existed for Game Boy disassembly projects. That is, until jverkoey started working on his project.
+
+Enter the [Windfish interactive Game Boy disassembler](https://github.com/jverkoey/windfish/).
+
+[![Screenshot of the Windfish IDE](/images/zelda-links-awakening-progress-report-13/windfish-ide-thumbnail.jpeg)](/images/zelda-links-awakening-progress-report-13/windfish-ide.png)<br>
+_Syntax highlighting, navigation, memory regions, emulator, debugger: this GUI has it all._
+
+Windfish can disassemble a Game Boy ROM, but that's just the beginning. It is an interactive tool to explore the code, understand how it works, and document the various routines and memory locations.
+
+One of its main features is that it integrates a [tracing disassembler](https://zladx.github.io/posts/links-awakening-disassembly-progress-report-part-7#a-tracing-disassembler): it doesn't just print the disassembled code, but attempts to simulate the execution, so that it can follow the code. And in the end, everything that has not be traced to executable code is probably data.
+
+Windfish can also associate a memory region to a picture type, so that it is known that this memory represents tiles. Or it can recognize some code patterns, and generate RGBDS macros.
+
+There's many more things to say about Windfish: how it has some neat coding tricks, documented in the [Architecture description](https://github.com/jverkoey/windfish/tree/develop/Architecture); how it integrates with the SameBoy emulator for a live exploration of the code; and so on.
+
+The project is written in the Swift language, and runs on macOS. The core libraries (invoked from the command line) should theoretically work on Linux and Windows though. If still has some rough edge, all the hard computer-science foundations are definitely present. That makes it one of the most promising tools of the scene.
+
+* [Watch a small demo video of Windfish](https://user-images.githubusercontent.com/45670/107868782-0334ce80-6e55-11eb-8961-ae6556d148e1.gif)
+* [Read the Windfish manual](https://github.com/jverkoey/windfish/blob/develop/ui/WindfishIDEHelp/_English.lproj/welcome.md)
+* [Download the first alpha release for macOS](https://github.com/jverkoey/windfish/releases/tag/v0.1)
+
+## Powering ROM hacks
+
+The disassembly, even in its unfinished state, made several romhacks possible (or at least way easier).
+
+Here's an (incomplete) list of some fan modifications made using the disassembly.
+
+* [Link's Awakening: Spanish translation](https://www.romhacking.net/translations/6376/) by [javs_l10n](https://linktr.ee/javs_l10n): a new Spanish localization, complete with extra characters, localized graphics and all.
+* A work-in-progress [toki pona](https://fr.wikipedia.org/wiki/Toki_pona) translation! Toki pona is a very simple constructed language, with 120 words enough to compose a language. You can [watch a presentation of the toki pona translation](https://youtu.be/xi8gUvqyMm4).
+* A work-in-progress Swedish translation by tobiasvl.
+* [Link's Awakening: Turbo français](https://www.romhacking.net/hacks/7281/): improvements over the official french translation, with diacritics support.
+* [Link's Awakening Redux](https://github.com/ShadowOne333/Links-Awakening-Redux), a quality-of-life mod, merging many existing improvements in the disassembly. With variable-width font, uncensoring, bug fixes and all.
+
+Among these projects, Daid's [LADX Randomizer](https://daid.github.io/LADXR/) holds a special place. Internally it doesn't actually use the disassembly (the ROM is edited using binary patching); but Daid often contributes its findings to the disassembly documentation.
+
+## What's next?
+
+The [high-level engine documentation](https://github.com/zladx/LADX-Disassembly/wiki/Game-engine-documentation) was featured on Hacker News, and widely appreciated – but it didn't get much more content since then. Some missing sections could clearly be extended.
+
+Code-wise, the main missing areas are still the physics engine and the entities code, which are fully disassembled but not documented yet. A good point of focus for the next months!
