@@ -1,12 +1,11 @@
 ---
 layout: post
 title: Link's Awakening Disassembly Progress Report – part 13
-date: 2021-02-20T06:39:01.436Z
+date: 2023-06-28T06:39:01.436Z
 lang: en
 ---
 
-After a solid two-years hiatus, here's a new progress report for the Zelda: Link’s Awakening disassembly! Here we’ll
-cover the changes that happened in the past two years.
+After a solid two-years hiatus, here's a new progress report for the Zelda: Link’s Awakening disassembly! Here we’ll cover the changes that happened in the past two years.
 
 ## New contributors
 
@@ -21,48 +20,55 @@ First let's congratulate the following new contributors, who made their first co
 
 ## New blog
 
-This series of articles moved to a new blog! Instead of being hosted on kemenaran's personnal blog, interleaved with other content, they are now published on this dedidated web site. Of course, the former URLs now redirect to these new pages.
+This series of articles moved to a new blog! Instead of being hosted on kemenaran's personal blog, interleaved with other content, they are now published on [this dedicated website](/). Of course, the former URLs now redirect to these new pages.
 
-This move will make it easier for readers to subscribe to this website for new articles. I hope it will also encourage a more collaborative process for getting these articles out.
+This move makes subscribing to new articles easier, since only relevant Link's Awakening content will be published. I hope it will also encourage a more collaborative process for getting these articles out.
 
-The [sources of this site](https://github.com/zladx/zladx.github.io) are public! So if you notice a typo or something, feel free to submit a PR. Contributing right from Github's UI usually works well, without the need to fork and run the website locally.
+Also, the [sources of this website](https://github.com/zladx/zladx.github.io) are public! If you notice a typo or something missing, feel free to submit a pull request. Contributing right from Github's UI usually works well, without the need to fork and run the website locally.
 
 ## Palettes documentation (RGB macros and all)
 
 The biggest addition of Link's Awakening DX, compared to the original monochrome version, is of course color.
 
-![](/images/zelda-links-awakening-progress-report-13/in-game-palettes.png)<br>
-_Example of the color palette used for green objects, and for Link's sprite._
+<img width="320" src="/images/zelda-links-awakening-progress-report-13/overworld-dmg.png" alt="Link's Awakening overworld on a black-and-white Game Boy" />
+<img width="320" src="/images/zelda-links-awakening-progress-report-13/overworld-cgb.png" alt="Link's Awakening overworld on a Game Boy Color" />
+<br>
+_Comparing the original and colorized overworld._
 
-But this wasn't reflected in the disassembly until now. Color palettes were represented in a binary format, matching the underlying hardware, but difficult to read and edit by humans.
+Unlike modern games, these colors are applied not by coloring each individual pixel — but by using a fixed set of color palettes.
+
+Each palette has 4 colors. And at a given time, the game can use 8 palettes for the background, and 8 palettes for the sprites. 
+
+<img width="404" src="/images/zelda-links-awakening-progress-report-13/overworld-palettes.png" alt="A screenshot of all 16 palettes used in the overworld screen" style="box-sizing: content-box" /><br>
+_The palettes used for the overworld screenshot above._
+
+But this wasn't well reflected in the disassembly until now. Color palettes were represented in a binary format, matching the underlying hardware, but difficult to read and edit by humans.
 
 ```m68k
-ObjectPalettes::
+ObjectPalettes:
     ds  $FF, $47, $00, $00, $A2, $22, $FF, $46
 ```
-_The same palette, as it was appearing in the source code._
+_The OBJ0 palette, as it was appearing in the source code._
 
-Kelsey Higham wanted colors that were easier to read. After a bit of collective macro writing on the Discord server, the final format ends up like this:
+Kelsey Higham wanted colors that were easier to read. After a bit of collective macro writing on the Discord server, the final format she ended up with reads like standard RGB hexadecimal colors.
 
 ```m68k
-ObjectPalettes::
+ObjectPalettes:
     rgb   #F8F888, #000000, #10A840, #F8B888
 ```
 
-There's a hairy chunk of macro code to convert an #RGB color to a two-bytes GBC color, at compile time. But the result is very pleasant to read: hexdecimal RGB colors are used everywhere, especially on the web, and many color editors can import and export from this format.
+There's a fair amount of hairy macro code at compile-time to convert these #RGB colors to a two-bytes GBC color. But the result is very pleasant to read: hexdecimal RGB colors are used everywhere, especially on the web, and many color editors can import and export from this format.
 
-https://github.com/zladx/LADX-Disassembly/pull/465
+Then Kelsey Higham started the daunting task of [converting all color palettes](https://github.com/zladx/LADX-Disassembly/pull/465) of the game to this format. Quite a task — but the end result is worth is: as far as we know, all color palettes in the source code are now decoded.
 
-Then Kelsey Higham started the daunting task of converting _all color palettes_ of the game to this format. Quite a task – but the end result is worth is: as far as we know, all color palettes in the source code are now decoded.
-
-But the #RGB format has another advantage: as it is so widely used, many text editors can display the described color right in the editor itself.
+And the #RGB format has another advantage: as it is so widely used, many text editors can display the described color right in the editor itself.
 
 Look at the result:
 
 <img alt="A screenshot of the source code opened in a text editor, with the rgb colors being appropriately colored" width="320" src="/images/zelda-links-awakening-progress-report-13/rgb-palettes.png"/><br>
 _Visual representation of the game palettes in VS Code._
 
-That's a really easy way to see the content of a palette, right from the source code.
+Now that's a really easy way to see the content of a palette, right from the source code.
 
 ## Fixes to the tilemaps encoder
 
@@ -288,7 +294,9 @@ Of course this has been used with many other constants as well (sound effects, e
 ld   hl, wEntitiesOptions1Table               
 add  hl, bc                                  
 ld   [hl], $D0
+```
 
+```m68k
 ; After, the bitflag is properly decoded
 ld   hl, wEntitiesOptions1Table               
 add  hl, bc                                  
@@ -303,7 +311,7 @@ So it's no surprise that a handful of fan-translations started popping up (there
 
 Each translation has to go through the whole dialog files. However, in these files, the dialogs are unordered, and out of context: there are no indication about where a specific dialog line or text is used. And looking up the dialog reference in the code doesn't always work (because of dialog identifiers generated dynamically).
 
-Fortunately, Kelsey Higham decided to [improve this situation](https://github.com/zladx/LADX-Disassembly/pull/509). – starting with the speakers names. Now, beside almost every dialog line, a comment indicates which character or entity uses the line in the game.
+Fortunately, Kelsey Higham decided to [improve this situation](https://github.com/zladx/LADX-Disassembly/pull/509) – starting with the speakers names. Now, beside almost every dialog line, a comment indicates which character or entity uses the line in the game.
 
 ```m68k
 Dialog19B:: ; Schule Donavitch
@@ -312,14 +320,16 @@ Dialog19B:: ; Schule Donavitch
 ```
 _Some lines are easy to attribute to a specific character._
 
-Now even the most obscure lines can be traced back. And i```m68kt greatly which helps to imagine the line in context, and translate it properly.
-
 ```m68k
 Dialog27A:: ; Marin
     db "Whew!  What a   "
     db "surprise!@"
 ```
 _Without context, that one would be less clear._
+
+Now even the most obscure lines can be traced back. And it greatly helps to imagine the line in context, and translate it properly.
+
+
 
 ## rgbds 0.6
 
@@ -345,7 +355,7 @@ Until recently, no such IDE existed for Game Boy disassembly projects. That is, 
 
 Enter the [Windfish interactive Game Boy disassembler](https://github.com/jverkoey/windfish/).
 
-[![Screenshot of the Windfish IDE](/images/zelda-links-awakening-progress-report-13/windfish-ide-thumbnail.jpeg)](/images/zelda-links-awakening-progress-report-13/windfish-ide.png)<br>
+[![Screenshot of the Windfish IDE](/images/zelda-links-awakening-progress-report-13/windfish-ide-thumbnail.jpeg)](/images/zelda-links-awakening-progress-report-13/windfish-ide.jpeg)<br>
 _Syntax highlighting, navigation, memory regions, emulator, debugger: this GUI has it all._
 
 Windfish can disassemble a Game Boy ROM, but that's just the beginning. It is an interactive tool to explore the code, understand how it works, and document the various routines and memory locations.
@@ -370,7 +380,7 @@ Here's an (incomplete) list of some fan modifications made using the disassembly
 
 * [Link's Awakening: Spanish translation](https://www.romhacking.net/translations/6376/) by [javs_l10n](https://linktr.ee/javs_l10n): a new Spanish localization, complete with extra characters, localized graphics and all.
 * A work-in-progress [toki pona](https://fr.wikipedia.org/wiki/Toki_pona) translation! Toki pona is a very simple constructed language, with 120 words enough to compose a language. You can [watch a presentation of the toki pona translation](https://youtu.be/xi8gUvqyMm4).
-* A work-in-progress Swedish translation by tobiasvl.
+* A work-in-progress Norwegian translation by tobiasvl.
 * [Link's Awakening: Turbo français](https://www.romhacking.net/hacks/7281/): improvements over the official french translation, with diacritics support.
 * [Link's Awakening Redux](https://github.com/ShadowOne333/Links-Awakening-Redux), a quality-of-life mod, merging many existing improvements in the disassembly. With variable-width font, uncensoring, bug fixes and all.
 
