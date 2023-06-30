@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Link's Awakening: Rendering the opening cutscene"
+author: kemenaran
 lang: en
 date: 2016-09-10 13:07
 ---

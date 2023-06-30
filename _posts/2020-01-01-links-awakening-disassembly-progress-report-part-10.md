@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Link’s Awakening disassembly progress report – part 10"
+author: kemenaran
 lang: en
 date: 2020-01-20 08:56
 ---

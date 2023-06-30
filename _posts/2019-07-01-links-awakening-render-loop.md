@@ -1,6 +1,7 @@
 ---
 layout: post
 title: An in-depth look at Link’s Awakening render loop
+author: kemenaran
 lang: en
 date: 2019-06-30 23:15
 ---

@@ -2,6 +2,7 @@
 layout: post
 title: "Link's Awakening Disassembly Progress Report part 12"
 date: 2021-01-11 10:00
+author: kemenaran
 lang: en
 ---
 
