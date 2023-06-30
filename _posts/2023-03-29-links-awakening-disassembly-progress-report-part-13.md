@@ -7,7 +7,7 @@ lang: en
 
 After a solid two-years hiatus, here's a new progress report for the Zelda: Link’s Awakening disassembly! Here we’ll cover the changes that happened in the past two years.
 
-## New contributors
+## ✨ New contributors
 
 First let's congratulate the following new contributors, who made their first commit to the project during the past two years:
 
@@ -18,15 +18,15 @@ First let's congratulate the following new contributors, who made their first co
 - [@ISSOtm](https://github.com/ISSOtm) [fixed an non-indexed image](https://github.com/zladx/LADX-Disassembly/pull/454), which was breaking compatibility with RGBDS 0.6.
 - [@KelseyHigham](https://github.com/KelseyHigham) decoded all color palettes data to readable RGB values, and added speaker labels to dialogs.
 
-## New blog
+## 📰 New blog
 
 This series of articles moved to a new blog! Instead of being hosted on kemenaran's personal blog, interleaved with other content, they are now published on [this dedicated website](/). Of course, the former URLs now redirect to these new pages.
 
 This move makes subscribing to new articles easier, since only relevant Link's Awakening content will be published. I hope it will also encourage a more collaborative process for getting these articles out.
 
-Also, the [sources of this website](https://github.com/zladx/zladx.github.io) are public! If you notice a typo or something missing, feel free to submit a pull request. Contributing right from Github's UI usually works well, without the need to fork and run the website locally.
+Also, the [source code of this website](https://github.com/zladx/zladx.github.io) is public! If you notice a typo or something missing, feel free to submit a pull request. Contributing right from Github's UI usually works well, without the need to fork and run the website locally.
 
-## Palettes documentation (RGB macros and all)
+## 🎨 Palettes documentation
 
 The biggest addition of Link's Awakening DX, compared to the original monochrome version, is of course color.
 
@@ -56,6 +56,7 @@ Kelsey Higham wanted colors that were easier to read. After a bit of collective 
 ObjectPalettes:
     rgb   #F8F888, #000000, #10A840, #F8B888
 ```
+_With this new format, the same OBJ0 palette is much easier to edit._
 
 There's a fair amount of hairy macro code at compile-time to convert these #RGB colors to a two-bytes GBC color. But the result is very pleasant to read: hexdecimal RGB colors are used everywhere, especially on the web, and many color editors can import and export from this format.
 
@@ -70,7 +71,7 @@ _Visual representation of the game palettes in VS Code._
 
 Now that's a really easy way to see the content of a palette, right from the source code.
 
-## Fixes to the tilemaps encoder
+## 🔧 Fixes to the tilemaps encoder
 
 ### A primer on tilemaps
 
@@ -87,7 +88,8 @@ _To read more on encoded tilemaps, see [the relevant entry](/posts/links-awakeni
 User `@Javs` on Discord reported an issue occurring when editing the tilemap of the File creation menu. When decoding, editing and then re-encoding this specific tilemap, the tile indicating the save slot number would disappear.
 
 ![file creation screenshots](/images/zelda-links-awakening-progress-report-13/tilemap-broken-file-select.png)<br>
-_On the left, the original version. On the right, the edited version, lacking the save slot number._
+_On the left, the original version.<br>
+On the right, the edited version, lacking the save slot number 2️⃣ on top._
 
 Now why did that happen? Turns out a combination of different issues.
 
@@ -122,7 +124,7 @@ When decoding the tilemap, we want the result to be editable using an external t
 But when re-encoding the tilemap, the background color was also imported into the file. Which resulted in the tilemap containing draw commands for all the black background areas.
 
 ![File creation screen edited + overlay](/images/zelda-links-awakening-progress-report-13/tilemap-reencoded.png)<br>
-_But an edited tilemap used to define draw commands for the whole screen._
+_But an edited tilemap would draw on the whole screen, including over the background tiles._
 
 This is not only wasteful, it also means that the game paints the tilemap bytes twice: once when filling the Background with the default color, and once again when reading the tilemap.
 
@@ -159,11 +161,11 @@ tools/convert_background.py encode src/data/backgrounds/menu_file_creation.tilem
 
 But hopefully this is something that can be defined by the file name at some point.
 
-## RAM shiftability
+## 🔀 RAM shiftability
 
 The disassembled code has been shiftable for quite a while now. That means it is possible to add or remove some code, build the game, and have things still working: all pointer addresses that used to be hardcoded now resolve to the new locations automatically.
 
-But at the beginning of 2022, there were still issues with the RAM shiftability: adding, removing or moving some variables in memory would break various things in the game.
+But at the beginning of year 2022, there were still issues with the RAM shiftability: adding, removing or moving some variables in memory would break various things in the game.
 
 Now, after a [good number of fixes](https://github.com/zladx/LADX-Disassembly/issues/409), the RAM is now properly shiftable.
 
@@ -171,9 +173,15 @@ For instance, you can add a block of 5 bytes at the beginning of the RAM definit
 
 All of this makes extensive ROM hacks possible: for instance, theoretically, it opens the gates to increase the maximum number of entities, or the number of letters reserved for the player's name.
 
-## Split entities
+## ✂️ Split entities
 
 Entities are the various NPCs, enemies, and actors that form the dynamic elements of the game. The game has more than 200 of these entities, and they make up a good part of the entire game code.
+
+<a href="/images/zelda-links-awakening-progress-report-13/entities.png">
+    <img width="400" src="/images/zelda-links-awakening-progress-report-13/entities-thumbnail.jpeg" alt="A grid with all the entities of Link's Awakening" />
+</a><br>
+_Yes, there are that many entities in the game.<br>
+Each of them can require thousand of lines of code._
 
 In the original source code, we have good reasons to believe that the entities code was grouped in a handful of source files.
 
@@ -211,7 +219,7 @@ These split are not straightforward: the entities code are not cleanly isolated,
 
 So this is still very much a work in progress: at least one file needs to be split, and the files structure is not final yet. But it progresses steadily.
 
-## Sprite-slots documentation
+## 📖 Sprite-slots documentation
 
 Daid took some time to research and document the ways entities sprites are defined and loaded on each room transition.
 
@@ -223,6 +231,9 @@ As the Game Boy video memory is quite limited, management of graphical resources
 - How does this interact with following NPCs (Marin, Bow-Wow, etc.), which also uses sprite memory?
 
 After a lot of researches, this ended up in [a large PR documenting the sprite-slots mechanism](https://github.com/zladx/LADX-Disassembly/pull/335), and a [higher-level wiki article](https://github.com/zladx/LADX-Disassembly/wiki/Game-engine-documentation#4-entities) on this topic. 
+
+![](/images/zelda-links-awakening-progress-report-13/spriteslots.png)
+_The fours spritesheets for room 07 on the Overworld._
 
 To summarize the key points of the sprites resource management:
 
@@ -236,7 +247,7 @@ That's the gist of it – but of course there's more.
 
 For a more detailed read on this topic, and details about how the following NPCs interact with this system, head to the [sprite-sheets article on the wiki](https://github.com/zladx/LADX-Disassembly/wiki/Game-engine-documentation#4-entities)!
 
-## Peephole replacement
+## 🕵️ Peephole replacement
 
 Often, in the code, we need to turn a numerical value into a constant. 
 
@@ -303,11 +314,11 @@ add  hl, bc
 ld   [hl], ENTITY_OPT1_IS_BOSS|ENTITY_OPT1_SWORD_CLINK_OFF|ENTITY_OPT1_IMMUNE_WATER_PIT
 ```
 
-## Dialog lines
+## 👥 Dialog lines attribution
 
 A disassembled game is a great tool for fan-translations. Compared to ROM hacking, the script is easier to edit, and doesn't require to relocate text pointers manually. Plus any language-specific features can be hacked in relatively easily.
 
-So it's no surprise that a handful of fan-translations started popping up (there are working progress in spanish, norwegian and toki-pona). 
+So it's no surprise that a handful of fan-translations started popping up ([as seen in the next section](#-powering-rom-hacks)).
 
 Each translation has to go through the whole dialog files. However, in these files, the dialogs are unordered, and out of context: there are no indication about where a specific dialog line or text is used. And looking up the dialog reference in the code doesn't always work (because of dialog identifiers generated dynamically).
 
@@ -329,13 +340,11 @@ _Without context, that one would be less clear._
 
 Now even the most obscure lines can be traced back. And it greatly helps to imagine the line in context, and translate it properly.
 
-
-
-## rgbds 0.6
+## ⛓ rgbds 0.6
 
 The toolchain used to compile the Game Boy code, [rgbds](https://rgbds.gbdev.io/), is surprisingly active. Every year or so, its assembler, linker and tools get new features–and sometime new deprecations. [rgbds 0.6](https://github.com/gbdev/rgbds/releases/tag/v0.6.0), released in October 2022, introduced a handful of breaking changes.
 
-Modders are usually keen to work with the latest version of the toolchain. So [tobiasvl](https://github.com/tobiasvl) took on the task to fix the code for the latest assembler version.
+Modders are usually keen to work with the latest version of the toolchain. So [@tobiasvl](https://github.com/tobiasvl) took on the task to fix the code for the latest assembler version.
 
 But before that, a handful of issues needed to be resolved:
 
@@ -343,15 +352,15 @@ But before that, a handful of issues needed to be resolved:
 - `rgbgfx`, the tool used to convert PNG files to the binary Game Boy image format, got an upgrade – but it broke the auto-detection of some color palettes. [ISSOtm](https://github.com/ISSOtm), the maintainer of rgbds, ensured that all PNG files in the source code have their grayscale palette [properly detected](https://github.com/zladx/LADX-Disassembly/pull/454/files).
 - Did you know that the game uses several different text-to-integer mappings (also known as charmaps)? The characters for the player name are encoded differently than the one for dialogs; plus of course each localized version has its own idiosyncrasies… [ShadowOne333](https://github.com/ShadowOne333) and kemenaran [refactored the various charmaps](https://github.com/zladx/LADX-Disassembly/pull/449) used by different portions of the game, to fix warnings on newer rgbds versions.
 
-And finally, tobiasvl messed with the Makefile, which can now [pass the correct compilation flags](https://github.com/zladx/LADX-Disassembly/pull/451) to both older and newer versions of rgbds.
+And finally, `@tobiasvl` messed with the Makefile, which can now [pass the correct compilation flags](https://github.com/zladx/LADX-Disassembly/pull/451) to both older and newer versions of rgbds.
 
-## Windfish interactive disassembler
+## 🧰 Windfish interactive disassembler
 
 Most disassembly projects are presented as a bunch of text files, with barely any of the interactive tooling . A bare-bone syntax highlighting when lucky — but no navigation, code structure or type inference one can expect when working on modern languages.
 
 This is where disassembly IDEs fill a gap. Instead of text files, they present an interactive and navigable view of the code. They also usually feature an integrated disassembler, pictures rendering, ties with an emulator for live code inspection, and so on. A notable example is [DiztinGUIsh](https://github.com/IsoFrieze/DiztinGUIsh), a disassembler for Super NES games.
 
-Until recently, no such IDE existed for Game Boy disassembly projects. That is, until jverkoey started working on his project.
+Until recently, no such IDE existed for Game Boy disassembly projects. That is, until [jverkoey](https://github.com/jverkoey) started working on his project.
 
 Enter the [Windfish interactive Game Boy disassembler](https://github.com/jverkoey/windfish/).
 
@@ -372,11 +381,9 @@ The project is written in the Swift language, and runs on macOS. The core librar
 * [Read the Windfish manual](https://github.com/jverkoey/windfish/blob/develop/ui/WindfishIDEHelp/_English.lproj/welcome.md)
 * [Download the first alpha release for macOS](https://github.com/jverkoey/windfish/releases/tag/v0.1)
 
-## Powering ROM hacks
+## ✅ Powering ROM hacks
 
-The disassembly, even in its unfinished state, made several romhacks possible (or at least way easier).
-
-Here's an (incomplete) list of some fan modifications made using the disassembly.
+The disassembly, even in its unfinished state, made several romhacks possible (or at least way easier). Here are a few of them!
 
 * [Link's Awakening: Spanish translation](https://www.romhacking.net/translations/6376/) by [javs_l10n](https://linktr.ee/javs_l10n): a new Spanish localization, complete with extra characters, localized graphics and all.
 * A work-in-progress [toki pona](https://fr.wikipedia.org/wiki/Toki_pona) translation! Toki pona is a very simple constructed language, with 120 words enough to compose a language. You can [watch a presentation of the toki pona translation](https://youtu.be/xi8gUvqyMm4).
@@ -388,6 +395,6 @@ Among these projects, Daid's [LADX Randomizer](https://daid.github.io/LADXR/) ho
 
 ## What's next?
 
-The [high-level engine documentation](https://github.com/zladx/LADX-Disassembly/wiki/Game-engine-documentation) was featured on Hacker News, and widely appreciated – but it didn't get much more content since then. Some missing sections could clearly be extended.
+A few months ago, the [high-level engine documentation](https://github.com/zladx/LADX-Disassembly/wiki/Game-engine-documentation) was featured on Hacker News, and widely appreciated. Since then it didn't get much more content though. Some missing sections could clearly be extended.
 
 Code-wise, the main missing areas are still the physics engine and the entities code, which are fully disassembled but not documented yet. A good point of focus for the next months!
