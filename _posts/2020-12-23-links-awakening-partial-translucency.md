@@ -2,6 +2,7 @@
 layout: post
 title: "Achieving partial translucency on the Game Boy Color"
 date: 2020-12-23 18:23
+author: kemenaran
 lang: en
 ---
 

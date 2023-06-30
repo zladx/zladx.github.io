@@ -2,6 +2,7 @@
 layout: post
 title: Link's Awakening Disassembly Progress Report – part 13
 date: 2023-06-28T06:39:01.436Z
+author: kemenaran
 lang: en
 ---
 

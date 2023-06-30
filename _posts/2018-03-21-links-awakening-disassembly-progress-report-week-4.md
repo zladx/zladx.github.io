@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Link’s Awakening disassembly progress report – week 4"
+author: kemenaran
 lang: en
 date: 2018-03-21 11:30
 ---

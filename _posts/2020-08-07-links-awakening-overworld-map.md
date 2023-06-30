@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "The hidden structure of Link's Awakening Overworld map"
+author: kemenaran
 lang: en
 date: 2020-08-07 08:47
 ---

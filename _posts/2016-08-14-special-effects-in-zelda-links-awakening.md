@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Special effects in Link’s Awakening
+author: kemenaran
 lang: en
 date: 2016-08-14 10:22
 ---
