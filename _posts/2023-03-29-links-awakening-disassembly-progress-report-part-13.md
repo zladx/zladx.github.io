@@ -324,7 +324,7 @@ So it's no surprise that a handful of fan-translations started popping up ([as s
 
 Each translation has to go through all the dialog files. However, in these files, the dialogs are unordered, and out of context: there is no indication about where a specific dialog line or text is used. And looking up the dialog reference in the code doesn't always work (because of dialog identifiers generated dynamically).
 
-Fortunately, Kelsey Higham decided to [improve this situation](https://github.com/zladx/LADX-Disassembly/pull/509) – starting with the speakersæ names. Now, beside almost every dialog line, a comment indicates which character or entity uses the line in the game.
+Fortunately, Kelsey Higham decided to [improve this situation](https://github.com/zladx/LADX-Disassembly/pull/509) – starting with the speakers' names. Now, beside almost every dialog line, a comment indicates which character or entity uses the line in the game.
 
 ```m68k
 Dialog19B:: ; Schule Donavitch
