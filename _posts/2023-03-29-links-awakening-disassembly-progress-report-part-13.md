@@ -394,7 +394,7 @@ The disassembly, even in its unfinished state, made several romhacks possible (o
 * [Link's Awakening Redux](https://github.com/ShadowOne333/Links-Awakening-Redux), a quality-of-life mod, merging many existing improvements in the disassembly. With variable-width font, uncensoring, bug fixes and all.
 * [Link's Awakening 30th Anniversary Edition](https://www.romhacking.net/forum/index.php?topic=37024.0), another work-in-progress quality-of-life mod, with many other improvements in the disassembly.
 
-Among these projects, Daid's [LADX Randomizer](https://daid.github.io/LADXR/) holds a special place. Internally it doesn't actually use the disassembly (the ROM is edited using binary patching); but Daid often contributes its findings to the disassembly documentation.
+Among these projects, Daid's [LADX Randomizer](https://daid.github.io/LADXR/) holds a special place. While this randomizer is not directly based on the disassembly (internally the ROM is edited using binary patching), the disassembly is instrumental for its development. Daid also contributes its findings to the disassembly documentation.
 
 ## What's next?
 
