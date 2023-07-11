@@ -1,10 +1,9 @@
 ---
 layout: post
 title: Link's Awakening Disassembly Progress Report – part 13
-date: 2023-06-29T06:39:01.436Z
+date: 2023-07-11T06:39:01.436Z
 author: kemenaran
 lang: en
-draft: true
 ---
 
 After a solid two-year hiatus, here's a new progress report for the Zelda: Link’s Awakening disassembly! Here we’ll cover the changes that happened in the past two years.
