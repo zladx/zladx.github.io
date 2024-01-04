@@ -388,7 +388,7 @@ The disassembly, even in its unfinished state, made several romhacks possible (o
 
 * [Link's Awakening: Spanish translation](https://www.romhacking.net/translations/6376/) by [javs_l10n](https://linktr.ee/javs_l10n): a new Spanish localization, complete with extra characters, localized graphics and all.
 * A work-in-progress [toki pona](https://fr.wikipedia.org/wiki/Toki_pona) translation! Toki pona is a very simple constructed language, with 120 words enough to compose a language. You can [watch a presentation of the toki pona translation](https://youtu.be/xi8gUvqyMm4).
-* A work-in-progress [Norwegian translation](https://github.com/tobiasvl/zelda-links-awakening-NO) by tobiasvl.
+* [Link's Awakening: Norwegian translation](https://www.romhacking.net/translations/7153/) by tobiasvl.
 * [Link's Awakening: Turbo français](https://www.romhacking.net/hacks/7281/): improvements over the official french translation, with diacritics support.
 * [Link's Awakening Redux](https://github.com/ShadowOne333/Links-Awakening-Redux), a quality-of-life mod, merging many existing improvements in the disassembly. With variable-width font, uncensoring, bug fixes and all.
 * [Link's Awakening 30th Anniversary Edition](https://www.romhacking.net/forum/index.php?topic=37024.0), another work-in-progress quality-of-life mod, with many other improvements in the disassembly.
