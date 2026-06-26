@@ -25,15 +25,15 @@ _A part of the tileset used on the Overworld.<br>
 This is way to big to fit all in memory at once, so only parts of it can be loaded at a time._
 </span>
 
-So in order to display graphics efficiently, great care must be given to the **ressource-management of tiles**.
+So in order to display graphics efficiently, great care must be given to the **resource-management of tiles**.
 
-A modern game engine would probably include a ressource-management system, which would ensure that, for each frame, the tiles required to display the objects on the screen are properly loaded. But the code for such a system would be quite complex: as uploading tiles takes a lot of time, it would have to predict which objects are going to appear on screen. The system would also have to ensure that not too many different objects are going to be visible on screen at once–otherwise there's no space left in VRAM to upload the required tiles.
+A modern game engine would probably include a resource-management system, which would ensure that, for each frame, the tiles required to display the objects on the screen are properly loaded. But the code for such a system would be quite complex: as uploading tiles takes a lot of time, it would have to predict which objects are going to appear on screen. The system would also have to ensure that not too many different objects are going to be visible on screen at once–otherwise there's no space left in VRAM to upload the required tiles.
 
 But on older hardware, such as the Game Boy, VRAM is so limited that every single tile must be put to use. There's no margin left for predictive loading or fancy resource-management systems.
 
 Instead, older games generally use **tilesets**. Tilesets are some fixed sets of tiles that are grouped together, and known to be predictable available at a given time. The game designers typically give each scene its own tileset, and then use a tile editor to draw the rendered frame. And the tilesets can be switched when the game transitions from one scene to another.
 
-As of Link's Awakening, the code responsible for this ressource management has recently been documented. And this is exactly how the game manages tiles. The world map is divided into sections of 2x2 rooms. Each section has an associated tileset, which allows the map feature some variety between the different sections (because they can use different tilesets).
+As of Link's Awakening, the code responsible for this resource management has recently been documented. And this is exactly how the game manages tiles. The world map is divided into sections of 2x2 rooms. Each section has an associated tileset, which allows the map feature some variety between the different sections (because they can use different tilesets).
 
 ```m68k
 OverworldTilesetsTable::
